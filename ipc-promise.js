@@ -1,6 +1,6 @@
 /*!
- * @license ipc-promise.js Copyright(c) 2015 sasa+1
- * https://github.com/sasaplus1/ipc-promise.js
+ * @license ipc-promise Copyright(c) 2015 sasa+1
+ * https://github.com/sasaplus1/ipc-promise
  * Released under the MIT license.
  */
 
