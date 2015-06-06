@@ -1,0 +1,8 @@
+{
+  "name": "ipc-promise",
+  "main": "./ipc-promise.min.js",
+  "ignore": [
+    "**/.*",
+    "node_modules/"
+  ]
+}

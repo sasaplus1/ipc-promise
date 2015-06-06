@@ -1,0 +1,5 @@
+ipc-promise.min.js
+.eslintignore
+.eslintrc
+.travis.yml
+test/

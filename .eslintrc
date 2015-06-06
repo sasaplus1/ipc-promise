@@ -1,0 +1,13 @@
+ecmaFeatures:
+  templateStrings: true
+
+env:
+  amd: true
+  browser: true
+  node: true
+
+rules:
+  quotes:
+    - 2
+    - single
+    - avoid-escape
