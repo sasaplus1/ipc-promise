@@ -1,10 +1,10 @@
 'use strict';
 
-var app = require('app'),
+let app = require('app'),
     BrowserWindow = require('browser-window'),
     ipcPromise = require('../ipc-promise');
 
-var mainWindow;
+let mainWindow;
 
 ipcPromise.on('to-main-from-renderer', function(params) {
   return new Promise(function(resolve, reject) {
