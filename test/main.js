@@ -2,7 +2,7 @@
 
 var app = require('app'),
     BrowserWindow = require('browser-window'),
-    ipcPromise = require('../ipc-promise.js');
+    ipcPromise = require('../ipc-promise');
 
 var mainWindow;
 
