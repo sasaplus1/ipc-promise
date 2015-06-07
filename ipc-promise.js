@@ -1,6 +1,6 @@
 /*!
- * @license ipc-promise.js Copyright(c) 2015 sasa+1
- * https://github.com/sasaplus1/ipc-promise.js
+ * @license ipc-promise Copyright(c) 2015 sasa+1
+ * https://github.com/sasaplus1/ipc-promise
  * Released under the MIT license.
  */
 
@@ -34,12 +34,13 @@
   var cee = new events.EventEmitter();
 
   /**
-   * main/renderer common event emitter.
+   * common event handler for ipc.
    *
+   * @private
    * @param {Event} event event object.
    * @param {Object} arg argument object.
    */
-  function bridge(event, arg) {
+  function commonEventHandler(event, arg) {
     // send from renderer process always.
 
     // add listener to common event emitter for main process.
@@ -68,7 +69,7 @@
    * trigger event.
    *
    * @param {String} event event name of common event emitter on main process.
-   * @param {Object} data data object.
+   * @param {*} data data for send.
    * @return {Promise} promise.
    */
   function send(event, data) {
@@ -132,8 +133,11 @@
     });
   }
 
-  // add bridge.
-  ipc.on(COMMON_EVENT_NAME, bridge);
+  // main process
+  if (typeof window === 'undefined') {
+    // add common event handler for ipc of main process.
+    ipc.on(COMMON_EVENT_NAME, commonEventHandler);
+  }
 
   return {
     on: on,

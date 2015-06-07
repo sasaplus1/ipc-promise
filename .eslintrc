@@ -1,4 +1,5 @@
 ecmaFeatures:
+  blockBindings: true
   templateStrings: true
 
 env:
