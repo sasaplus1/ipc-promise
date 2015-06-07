@@ -34,12 +34,13 @@
   var cee = new events.EventEmitter();
 
   /**
-   * main/renderer common event emitter.
+   * common event handler for ipc.
    *
+   * @private
    * @param {Event} event event object.
    * @param {Object} arg argument object.
    */
-  function bridge(event, arg) {
+  function commonEventHandler(event, arg) {
     // send from renderer process always.
 
     // add listener to common event emitter for main process.
@@ -132,8 +133,11 @@
     });
   }
 
-  // add bridge.
-  ipc.on(COMMON_EVENT_NAME, bridge);
+  // main process
+  if (typeof window === 'undefined') {
+    // add common event handler for ipc of main process.
+    ipc.on(COMMON_EVENT_NAME, commonEventHandler);
+  }
 
   return {
     on: on,
