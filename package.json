@@ -1,6 +1,6 @@
 {
   "name": "ipc-promise",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "sasa+1 <sasaplus1@gmail.com>",
   "description": "ipc use as Promises",
   "main": "./ipc-promise.js",
