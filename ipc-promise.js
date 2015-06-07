@@ -68,7 +68,7 @@
    * trigger event.
    *
    * @param {String} event event name of common event emitter on main process.
-   * @param {Object} data data object.
+   * @param {*} data data for send.
    * @return {Promise} promise.
    */
   function send(event, data) {
