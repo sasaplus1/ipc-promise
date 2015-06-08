@@ -62,7 +62,7 @@
     });
 
     // emit to common event emitter for main process.
-    cee.emit(arg.event, arg.data);
+    cee.emit(arg.event, arg.data, event);
   }
 
   /**
@@ -122,8 +122,8 @@
     // call from main process always.
 
     // add listener to common event emitter for main process.
-    cee.on(event, function(data) {
-      listener(data)
+    cee.on(event, function(data, ipcEvent) {
+      listener(data, ipcEvent)
         .then(function(result) {
           cee.emit(event + SUCCESS_EVENT_SUFFIX, result);
         })
