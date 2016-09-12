@@ -14,17 +14,19 @@
     "url": "git://github.com/sasaplus1/ipc-promise.git"
   },
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint --ext .js .",
     "minify": "uglifyjs ipc-promise.js --comments '@license' -cm -r ipcPromise -o ./ipc-promise.min.js",
-    "test": "electron ./test/main.js 2>&1 | grep -v 'exit: 0' && true || false"
+    "test": "NODE_ENV=test mocha ./test/index.js"
   },
   "devDependencies": {
     "babel-preset-power-assert": "^1.0.0",
     "babel-register": "^6.14.0",
-    "electron-prebuilt": "^0.27.2",
+    "electron": "^1.3.5",
+    "electron-prebuilt": "^1.3.5",
     "eslint": "^0.22.1",
     "mocha": "^3.0.2",
     "power-assert": "^1.4.1",
+    "spectron": "^3.3.0",
     "uglify-js": "^2.4.23"
   }
 }

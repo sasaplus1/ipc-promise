@@ -1,8 +1,10 @@
 'use strict';
 
-let app = require('app'),
-    BrowserWindow = require('browser-window'),
-    ipcPromise = require('../ipc-promise');
+const electron = require('electron');
+
+const { app, BrowserWindow } = electron;
+
+const ipcPromise = require('../ipc-promise');
 
 let mainWindow;
 
@@ -10,8 +12,10 @@ ipcPromise.on('to-main-from-renderer', function(params) {
   return new Promise(function(resolve, reject) {
     if (params.value === 'main') {
       resolve({ id: 42 });
+      app.exit(0);
     } else {
       reject(new Error('to-main-from-renderer'));
+      app.exit(1);
     }
   });
 });
@@ -29,5 +33,5 @@ app.on('ready', function() {
   mainWindow.on('closed', function() {
     mainWindow = null;
   });
-  mainWindow.loadUrl(`file://${__dirname}/index.html`);
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
 });

@@ -8,13 +8,13 @@
       value: 'main'
     })
     .then(function(result) {
-      console.log(JSON.stringify(result));
-      console.log('exit: 0');
-      require('remote').process.exit(0);
+      const electron = require('electron');
+
+      electron.app.exit(0);
     })
     .catch(function(err) {
-      console.error(JSON.stringify(err));
-      console.error('exit: 1');
-      require('remote').process.exit(1);
+      const electron = require('electron');
+
+      electron.app.exit(1);
     });
 }());
