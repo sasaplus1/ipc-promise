@@ -14,14 +14,17 @@
   'use strict';
 
   if (typeof define === 'function' && define.amd) {
-    define(['ipc', 'events'], factory);
+    define(['electron', 'events'], factory);
   } else if (typeof exports === 'object') {
-    module.exports = factory(require('ipc'), require('events'));
+    module.exports = factory(require('electron') , require('events'));
   } else {
-    root.ipcPromise = factory(global.require('ipc'), global.require('events'));
+    root.ipcPromise = factory(global.require('electron'), global.require('events'));
   }
-}((this || 0).self || global, function(ipc, events){
+}((this || 0).self || global, function(electron, events){
   'use strict';
+
+  var ipcMain = electron.ipcMain,
+      ipcRenderer = electron.ipcRenderer;
 
   // constants
   var COMMON_EVENT_NAME = 'ipc-promise-common-event',
@@ -41,7 +44,7 @@
    * @param {Object} arg argument object.
    */
   function commonEventHandler(event, arg) {
-    // send from renderer process always.
+    // NOTE: send from renderer process always.
 
     // add listener to common event emitter for main process.
     cee.on(arg.event + SUCCESS_EVENT_SUFFIX, function(result) {
@@ -73,38 +76,38 @@
    * @return {Promise} promise.
    */
   function send(event, data) {
-    // call from renderer process always.
+    // NOTE: call from renderer process always.
 
     return new Promise(function(resolve, reject) {
       var id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
           onSuccess, onFailure;
 
       // add listener to ipc for renderer process.
-      ipc.on(COMMON_SUCCESS_EVENT_NAME, onSuccess = function(params) {
+      ipcRenderer.on(COMMON_SUCCESS_EVENT_NAME, onSuccess = function(event, params) {
         if (params.id !== id || params.event !== event) {
           return;
         }
 
         // remove this listener.
-        ipc.removeListener(COMMON_SUCCESS_EVENT_NAME, onSuccess);
-        ipc.removeListener(COMMON_FAILURE_EVENT_NAME, onFailure);
+        ipcRenderer.removeListener(COMMON_SUCCESS_EVENT_NAME, onSuccess);
+        ipcRenderer.removeListener(COMMON_FAILURE_EVENT_NAME, onFailure);
 
         resolve(params.data);
       });
-      ipc.on(COMMON_FAILURE_EVENT_NAME, onFailure = function(params) {
+      ipcRenderer.on(COMMON_FAILURE_EVENT_NAME, onFailure = function(event, params) {
         if (params.id !== id || params.event !== event) {
           return;
         }
 
         // remove this listener.
-        ipc.removeListener(COMMON_SUCCESS_EVENT_NAME, onSuccess);
-        ipc.removeListener(COMMON_FAILURE_EVENT_NAME, onFailure);
+        ipcRenderer.removeListener(COMMON_SUCCESS_EVENT_NAME, onSuccess);
+        ipcRenderer.removeListener(COMMON_FAILURE_EVENT_NAME, onFailure);
 
         reject(params.data);
       });
 
       // send to ipc for main process.
-      ipc.send(COMMON_EVENT_NAME, {
+      ipcRenderer.send(COMMON_EVENT_NAME, {
         data: data,
         event: event,
         id: id
@@ -136,7 +139,7 @@
   // main process
   if (typeof window === 'undefined') {
     // add common event handler for ipc of main process.
-    ipc.on(COMMON_EVENT_NAME, commonEventHandler);
+    ipcMain.on(COMMON_EVENT_NAME, commonEventHandler);
   }
 
   return {
