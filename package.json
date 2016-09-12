@@ -2,6 +2,9 @@
   "name": "ipc-promise",
   "version": "0.1.1",
   "author": "sasa+1 <sasaplus1@gmail.com>",
+  "contributors": [
+    "itsjimbo"
+  ],
   "description": "ipc use as Promises",
   "main": "./ipc-promise.js",
   "license": "MIT",
