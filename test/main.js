@@ -12,10 +12,8 @@ ipcPromise.on('to-main-from-renderer', function(params) {
   return new Promise(function(resolve, reject) {
     if (params.value === 'main') {
       resolve({ id: 42 });
-      app.exit(0);
     } else {
       reject(new Error('to-main-from-renderer'));
-      app.exit(1);
     }
   });
 });
@@ -28,7 +26,7 @@ app.on('window-all-closed', function() {
 
 app.on('ready', function() {
   mainWindow = new BrowserWindow({
-    show: false
+    show: true,
   });
   mainWindow.on('closed', function() {
     mainWindow = null;
