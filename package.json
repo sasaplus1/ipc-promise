@@ -19,8 +19,8 @@
     "test": "electron ./test/main.js 2>&1 | grep -v 'exit: 0' && true || false"
   },
   "devDependencies": {
-    "electron-prebuilt": "^0.27.2",
-    "eslint": "^0.22.1",
-    "uglify-js": "^2.4.23"
+    "electron": "^1.4.2",
+    "eslint": "^3.7.1",
+    "uglify-js": "^2.7.3"
   }
 }
