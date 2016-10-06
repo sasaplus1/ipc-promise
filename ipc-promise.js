@@ -47,35 +47,35 @@
     // NOTE: send from renderer process always.
 
     // add listener to common event emitter for main process.
-    cee.on(arg.event + SUCCESS_EVENT_SUFFIX, function(result) {
+    cee.on(arg.eventName + SUCCESS_EVENT_SUFFIX, function(result) {
       // send success to ipc for renderer process.
       event.sender.send(COMMON_SUCCESS_EVENT_NAME, {
         data: result,
-        event: arg.event,
+        eventName: arg.eventName,
         id: arg.id
       });
     });
-    cee.on(arg.event + FAILURE_EVENT_SUFFIX, function(result) {
+    cee.on(arg.eventName + FAILURE_EVENT_SUFFIX, function(result) {
       // send failure to ipc for renderer process.
       event.sender.send(COMMON_FAILURE_EVENT_NAME, {
         data: result,
-        event: arg.event,
+        eventName: arg.eventName,
         id: arg.id
       });
     });
 
     // emit to common event emitter for main process.
-    cee.emit(arg.event, arg.data, event);
+    cee.emit(arg.eventName, arg.data, event);
   }
 
   /**
    * trigger event.
    *
-   * @param {String} event event name of common event emitter on main process.
+   * @param {String} eventName event name of common event emitter on main process.
    * @param {*} data data for send.
    * @return {Promise} promise.
    */
-  function send(event, data) {
+  function send(eventName, data) {
     // NOTE: call from renderer process always.
 
     return new Promise(function(resolve, reject) {
@@ -84,7 +84,7 @@
 
       // add listener to ipc for renderer process.
       ipcRenderer.on(COMMON_SUCCESS_EVENT_NAME, onSuccess = function(event, params) {
-        if (params.id !== id || params.event !== event) {
+        if (params.id !== id || params.eventName !== eventName) {
           return;
         }
 
@@ -95,7 +95,7 @@
         resolve(params.data);
       });
       ipcRenderer.on(COMMON_FAILURE_EVENT_NAME, onFailure = function(event, params) {
-        if (params.id !== id || params.event !== event) {
+        if (params.id !== id || params.eventName !== eventName) {
           return;
         }
 
@@ -109,7 +109,7 @@
       // send to ipc for main process.
       ipcRenderer.send(COMMON_EVENT_NAME, {
         data: data,
-        event: event,
+        eventName: eventName,
         id: id
       });
     });
