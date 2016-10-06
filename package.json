@@ -16,11 +16,12 @@
   "scripts": {
     "lint": "eslint .",
     "minify": "uglifyjs ipc-promise.js --comments '@license' -cm -r ipcPromise -o ./ipc-promise.min.js",
-    "test": "electron ./test/main.js 2>&1 | grep -v 'exit: 0' && true || false"
+    "test": "mocha"
   },
   "devDependencies": {
     "electron": "^1.4.2",
     "eslint": "^3.7.1",
+    "glob": "^7.1.0",
     "mocha": "^3.1.0",
     "uglify-js": "^2.7.3"
   }
