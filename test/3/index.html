@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script charset="utf-8" src="../../ipc-promise.js"></script>
+<script>
+  const remote = require('electron').remote;
+
+  ipcPromise
+    .send('message', {
+      value: 100,
+    })
+    .then(function(result) {
+      if (result.value === 200) {
+        remote.app.exit(0);
+      } else {
+        remote.app.exit(1);
+      }
+    })
+    .catch(function() {
+      remote.app.exit(1);
+    });
+</script>

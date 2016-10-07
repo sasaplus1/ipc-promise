@@ -1,23 +1,28 @@
 {
   "name": "ipc-promise",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "sasa+1 <sasaplus1@gmail.com>",
+  "contributors": [
+    "itsjimbo"
+  ],
   "description": "ipc use as Promises",
   "main": "./ipc-promise.js",
   "license": "MIT",
   "readmeFilename": "README.md",
   "repository": {
     "type": "git",
-    "url": "git://github.com/sasaplus1/ipc-promise.git"
+    "url": "https://github.com/sasaplus1/ipc-promise.git"
   },
   "scripts": {
     "lint": "eslint .",
     "minify": "uglifyjs ipc-promise.js --comments '@license' -cm -r ipcPromise -o ./ipc-promise.min.js",
-    "test": "electron ./test/main.js 2>&1 | grep -v 'exit: 0' && true || false"
+    "test": "mocha"
   },
   "devDependencies": {
-    "electron-prebuilt": "^0.27.2",
-    "eslint": "^0.22.1",
-    "uglify-js": "^2.4.23"
+    "electron": "^1.4.2",
+    "eslint": "^3.7.1",
+    "glob": "^7.1.0",
+    "mocha": "^3.1.0",
+    "uglify-js": "^2.7.3"
   }
 }

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script charset="utf-8" src="../../ipc-promise.js"></script>
+<script>
+  const remote = require('electron').remote;
+
+  ipcPromise
+    .send('message')
+    .then(function() {
+      remote.app.exit(1);
+    })
+    .catch(function() {
+      remote.app.exit(0);
+    });
+</script>
