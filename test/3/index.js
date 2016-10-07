@@ -8,7 +8,9 @@ if (typeof require('electron') === 'string') {
 const path = require('path'),
       url = require('url');
 
-const { app, BrowserWindow } = require('electron');
+const electron = require('electron'),
+      app = electron.app,
+      BrowserWindow = electron.BrowserWindow;
 
 const ipcPromise = require('../../ipc-promise');
 

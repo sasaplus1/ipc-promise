@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert'),
-      { spawnSync } = require('child_process');
+      spawnSync = require('child_process').spawnSync;
 
 const electron = require('electron'),
       glob = require('glob');

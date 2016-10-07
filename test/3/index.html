@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <script charset="utf-8" src="../../ipc-promise.js"></script>
 <script>
-  const { remote } = require('electron');
+  const remote = require('electron').remote;
 
   ipcPromise
     .send('message', {
