@@ -11,7 +11,7 @@
   "readmeFilename": "README.md",
   "repository": {
     "type": "git",
-    "url": "git://github.com/sasaplus1/ipc-promise.git"
+    "url": "https://github.com/sasaplus1/ipc-promise.git"
   },
   "scripts": {
     "lint": "eslint .",
