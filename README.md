@@ -25,13 +25,14 @@ ipcPromise.on('twice', function(params) {
   return Promise.resolve(params.value * 2);
 });
 
-var app = require('app'),
-    BrowserWindow = require('browser-window'),
+var electron = require('electron'),
+    app = electron.app,
+    BrowserWindow = electron.BrowserWindow,
     mainWindow;
 
 app.on('ready', function() {
   mainWindow = new BrowserWindow({});
-  mainWindow.loadUrl('file://' + __dirname + '/index.html');
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
 });
 ```
 
