@@ -1,3 +1,8 @@
+# 0.1.3 / 2017-01-29
+
+- fixed memory leak
+  - thanks to @azu
+
 # 0.1.2 / 2016-10-07
 
 - updated for latest Electron
