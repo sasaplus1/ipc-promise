@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script charset="utf-8" src="../../ipc-promise.js"></script>
+<script>
+  const remote = require('electron').remote;
+
+  const calls = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  const sequentialPromise = calls.reduce(function (prevPromise, count) {
+    return prevPromise.then(function(){
+      return ipcPromise
+        .send('message', {
+          count: count
+        });
+    });
+  }, Promise.resolve());
+  sequentialPromise.then(function () {
+    return ipcPromise.send('check-memory-status');
+  }).then(function (status) {
+    if (status === 'ok') {
+      remote.app.exit(0);
+    } else {
+      remote.app.exit(1);
+    }
+  }).catch(function () {
+    remote.app.exit(1);
+  });
+</script>
