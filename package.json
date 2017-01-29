@@ -3,6 +3,7 @@
   "version": "0.1.2",
   "author": "sasa+1 <sasaplus1@gmail.com>",
   "contributors": [
+    "azu",
     "itsjimbo"
   ],
   "description": "ipc use as Promises",
