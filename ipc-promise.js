@@ -46,23 +46,30 @@
   function commonEventHandler(event, arg) {
     // NOTE: send from renderer process always.
 
-    // add listener to common event emitter for main process.
-    cee.on(arg.eventName + SUCCESS_EVENT_SUFFIX, function(result) {
+    var onSuccess = function(result) {
       // send success to ipc for renderer process.
       event.sender.send(COMMON_SUCCESS_EVENT_NAME, {
         data: result,
         eventName: arg.eventName,
         id: arg.id
       });
-    });
-    cee.on(arg.eventName + FAILURE_EVENT_SUFFIX, function(result) {
+      cee.removeListener(arg.eventName + SUCCESS_EVENT_SUFFIX, onSuccess);
+      cee.removeListener(arg.eventName + FAILURE_EVENT_SUFFIX, onFailure);
+    };
+    var onFailure = function(result) {
       // send failure to ipc for renderer process.
       event.sender.send(COMMON_FAILURE_EVENT_NAME, {
         data: result,
         eventName: arg.eventName,
         id: arg.id
       });
-    });
+      cee.removeListener(arg.eventName + SUCCESS_EVENT_SUFFIX, onSuccess);
+      cee.removeListener(arg.eventName + FAILURE_EVENT_SUFFIX, onFailure);
+    };
+
+    // add listener to common event emitter for main process.
+    cee.on(arg.eventName + SUCCESS_EVENT_SUFFIX, onSuccess);
+    cee.on(arg.eventName + FAILURE_EVENT_SUFFIX, onFailure);
 
     // emit to common event emitter for main process.
     cee.emit(arg.eventName, arg.data, event);
@@ -79,11 +86,8 @@
     // NOTE: call from renderer process always.
 
     return new Promise(function(resolve, reject) {
-      var id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
-          onSuccess, onFailure;
-
-      // add listener to ipc for renderer process.
-      ipcRenderer.on(COMMON_SUCCESS_EVENT_NAME, onSuccess = function(event, params) {
+      var id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+      var onSuccess = function(event, params) {
         if (params.id !== id || params.eventName !== eventName) {
           return;
         }
@@ -93,8 +97,8 @@
         ipcRenderer.removeListener(COMMON_FAILURE_EVENT_NAME, onFailure);
 
         resolve(params.data);
-      });
-      ipcRenderer.on(COMMON_FAILURE_EVENT_NAME, onFailure = function(event, params) {
+      };
+      var onFailure = function(event, params) {
         if (params.id !== id || params.eventName !== eventName) {
           return;
         }
@@ -104,7 +108,11 @@
         ipcRenderer.removeListener(COMMON_FAILURE_EVENT_NAME, onFailure);
 
         reject(params.data);
-      });
+      };
+
+      // add listener to ipc for renderer process.
+      ipcRenderer.on(COMMON_SUCCESS_EVENT_NAME, onSuccess);
+      ipcRenderer.on(COMMON_FAILURE_EVENT_NAME, onFailure);
 
       // send to ipc for main process.
       ipcRenderer.send(COMMON_EVENT_NAME, {
