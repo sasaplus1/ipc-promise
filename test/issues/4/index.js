@@ -12,7 +12,7 @@ const electron = require('electron'),
   app = electron.app,
   BrowserWindow = electron.BrowserWindow;
 
-const ipcPromise = require('../../ipc-promise');
+const ipcPromise = require('../../../ipc-promise');
 
 let mainWindow;
 
