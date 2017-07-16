@@ -36,6 +36,16 @@
   // common event emitter
   var cee = new events.EventEmitter();
 
+  // get temporary event name for success
+  function getSuccessEventName(eventName, id) {
+    return eventName + id.toString() + SUCCESS_EVENT_SUFFIX;
+  }
+
+  // get temporary event name for failure
+  function getFailureEventName(eventName, id) {
+    return eventName + id.toString() + FAILURE_EVENT_SUFFIX;
+  }
+
   /**
    * common event handler for ipc.
    *
@@ -45,6 +55,8 @@
    */
   function commonEventHandler(event, arg) {
     // NOTE: send from renderer process always.
+    var successEventName = getSuccessEventName(arg.eventName, arg.id);
+    var failureEventName = getFailureEventName(arg.eventName, arg.id);
 
     var onSuccess = function(result) {
       // send success to ipc for renderer process.
@@ -53,8 +65,8 @@
         eventName: arg.eventName,
         id: arg.id
       });
-      cee.removeListener(arg.eventName + SUCCESS_EVENT_SUFFIX, onSuccess);
-      cee.removeListener(arg.eventName + FAILURE_EVENT_SUFFIX, onFailure);
+      cee.removeListener(successEventName, onSuccess);
+      cee.removeListener(failureEventName, onFailure);
     };
     var onFailure = function(result) {
       // send failure to ipc for renderer process.
@@ -63,16 +75,16 @@
         eventName: arg.eventName,
         id: arg.id
       });
-      cee.removeListener(arg.eventName + SUCCESS_EVENT_SUFFIX, onSuccess);
-      cee.removeListener(arg.eventName + FAILURE_EVENT_SUFFIX, onFailure);
+      cee.removeListener(successEventName, onSuccess);
+      cee.removeListener(failureEventName, onFailure);
     };
 
     // add listener to common event emitter for main process.
-    cee.on(arg.eventName + SUCCESS_EVENT_SUFFIX, onSuccess);
-    cee.on(arg.eventName + FAILURE_EVENT_SUFFIX, onFailure);
+    cee.on(successEventName, onSuccess);
+    cee.on(failureEventName, onFailure);
 
     // emit to common event emitter for main process.
-    cee.emit(arg.eventName, arg.data, event);
+    cee.emit(arg.eventName, arg.id, arg.data, event);
   }
 
   /**
@@ -133,13 +145,13 @@
     // call from main process always.
 
     // add listener to common event emitter for main process.
-    cee.on(event, function(data, ipcEvent) {
+    cee.on(event, function(id, data, ipcEvent) {
       listener(data, ipcEvent)
         .then(function(result) {
-          cee.emit(event + SUCCESS_EVENT_SUFFIX, result);
+          cee.emit(getSuccessEventName(event, id), result);
         })
         .catch(function(result) {
-          cee.emit(event + FAILURE_EVENT_SUFFIX, result);
+          cee.emit(getFailureEventName(event, id), result);
         });
     });
   }
