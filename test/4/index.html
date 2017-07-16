@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script charset="utf-8" src="../../ipc-promise.js"></script>
+<script>
+  const remote = require('electron').remote;
+
+  Promise.all([
+    ipcPromise.send('delay_echo', 1),
+    ipcPromise.send('delay_echo', 2)
+  ]).then(function(values) {
+      if (values[0] === 1 && values[1] === 2) {
+        remote.app.exit(0);
+      }
+      else {
+        remote.app.exit(1);
+      }
+    })
+    .catch(function() {
+      remote.app.exit(1);
+    });
+
+</script>
