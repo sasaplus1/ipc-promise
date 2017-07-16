@@ -4,7 +4,8 @@
   "author": "sasa+1 <sasaplus1@gmail.com>",
   "contributors": [
     "azu",
-    "itsjimbo"
+    "itsjimbo",
+    "wonderful-panda"
   ],
   "description": "ipc use as Promises",
   "main": "./ipc-promise.js",
