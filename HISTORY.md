@@ -1,3 +1,8 @@
+# 0.1.4 / 2017-07-16
+
+- fixed #7
+  - thanks to @wonderful-panda
+
 # 0.1.3 / 2017-01-29
 
 - fixed memory leak
