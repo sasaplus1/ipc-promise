@@ -146,7 +146,7 @@
 
     // add listener to common event emitter for main process.
     cee.on(event, function(id, data, ipcEvent) {
-      listener(data, ipcEvent)
+      listener(data)
         .then(function(result) {
           cee.emit(getSuccessEventName(event, id), result);
         })
